@@ -19,4 +19,7 @@ This is an [Arduino Library](https://www.arduino.cc/en/Guide/Libraries) for Ardu
 
 ## Examples
 
-The library comes with [examples](examples). After installing the library you need to restart the Arduino IDE before they can be found under **File > Examples > TheThingsNetwork**.
+
+## Credits
+
+This library is a direct port of the excellent [`The Things Network` library for Arduino Devices](https://github.com/TheThingsNetwork/arduino-device-lib) and attempts to present API compatibility to it.
