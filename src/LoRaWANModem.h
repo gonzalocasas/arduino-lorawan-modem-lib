@@ -16,7 +16,7 @@
 #include <Stream.h>
 #if defined(ARDUINO_ARCH_AVR) || defined(ARDUINO_ARCH_SAMD)
 #include <avr/pgmspace.h>
-#else
+#elif !defined(ARDUINO_ARCH_MBED)
 #include <pgmspace.h>
 #endif
 
