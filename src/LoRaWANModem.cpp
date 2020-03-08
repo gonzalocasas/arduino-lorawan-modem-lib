@@ -1,10 +1,12 @@
-// This library is a direct port of the excellent The Things Network library
-// for Arduino Devices by Johan Stokking et al.
-// This library aims to preserve API compatibility to the original,
-// but the underlying implementation will be substantially different.
-// Despite of that, the original author list and some copyright notices
-// are kept untouched.
+// This file is part of the LoRaWAN Modem library.
+// Copyright © 2020 Gonzalo Casas
 //
+// The library is a direct port of the excellent The Things Network library
+// for Arduino Devices by Johan Stokking et al,
+// and it (mostly) preserves API compatibility to the original.
+//
+// Based on the The Things Network library for Arduino Devices
+// https://github.com/TheThingsNetwork/arduino-device-lib/
 // Copyright © 2017 The Things Network
 
 #include "LoRaWANModem.h"

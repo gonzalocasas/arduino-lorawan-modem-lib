@@ -22,6 +22,4 @@ The library comes with [examples](examples). After installing the library you ne
 
 ## Credits
 
-This library is a direct port of the excellent [`The Things Network` library for Arduino Devices](https://github.com/TheThingsNetwork/arduino-device-lib) by [Johan Stokking et al](AUTHORS).
-
-This library aims to preserve API compatibility to the original, but the underlying implementation will be substantially different. Despite of that, the original author list and some copyright notices are kept untouched.
+The library is a direct port of the excellent [`The Things Network` library for Arduino Devices](https://github.com/TheThingsNetwork/arduino-device-lib) by [Johan Stokking et al](AUTHORS), and it (mostly) preserves API compatibility to the original.
