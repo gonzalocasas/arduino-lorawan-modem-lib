@@ -295,7 +295,7 @@ uint8_t receivedPort(const char *s)
   return port;
 }
 
-TheThingsNetwork::TheThingsNetwork(Stream &modemStream, Stream &debugStream, ttn_fp_t fp, uint8_t sf, uint8_t fsb)
+LoRaWANModem::LoRaWANModem(Stream &modemStream, Stream &debugStream, ttn_fp_t fp, uint8_t sf, uint8_t fsb)
 {
   this->debugStream = &debugStream;
   this->modemStream = &modemStream;
@@ -305,17 +305,17 @@ TheThingsNetwork::TheThingsNetwork(Stream &modemStream, Stream &debugStream, ttn
   this->fsb = fsb;
 }
 
-size_t TheThingsNetwork::getAppEui(char *buffer, size_t size)
+size_t LoRaWANModem::getAppEui(char *buffer, size_t size)
 {
   return readResponse(MAC_TABLE, MAC_GET_SET_TABLE, MAC_APPEUI, buffer, size);
 }
 
-size_t TheThingsNetwork::getHardwareEui(char *buffer, size_t size)
+size_t LoRaWANModem::getHardwareEui(char *buffer, size_t size)
 {
   return readResponse(SYS_TABLE, SYS_TABLE, SYS_GET_HWEUI, buffer, size);
 }
 
-uint16_t TheThingsNetwork::getVDD()
+uint16_t LoRaWANModem::getVDD()
 {
   if (readResponse(SYS_TABLE, SYS_TABLE, SYS_GET_VDD, buffer, sizeof(buffer)) > 0) {
     return atoi(buffer);
@@ -323,7 +323,7 @@ uint16_t TheThingsNetwork::getVDD()
   return 0;
 }
 
-void TheThingsNetwork::debugPrintIndex(uint8_t index, const char *value)
+void LoRaWANModem::debugPrintIndex(uint8_t index, const char *value)
 {
   char message[100];
   strcpy_P(message, (char *)pgm_read_word(&(show_table[index])));
@@ -334,7 +334,7 @@ void TheThingsNetwork::debugPrintIndex(uint8_t index, const char *value)
   }
 }
 
-void TheThingsNetwork::debugPrintMessage(uint8_t type, uint8_t index, const char *value)
+void LoRaWANModem::debugPrintMessage(uint8_t type, uint8_t index, const char *value)
 {
   char message[100];
   switch (type)
@@ -357,7 +357,7 @@ void TheThingsNetwork::debugPrintMessage(uint8_t type, uint8_t index, const char
   }
 }
 
-void TheThingsNetwork::clearReadBuffer()
+void LoRaWANModem::clearReadBuffer()
 {
   while (modemStream->available())
   {
@@ -365,7 +365,7 @@ void TheThingsNetwork::clearReadBuffer()
   }
 }
 
-size_t TheThingsNetwork::readLine(char *buffer, size_t size, uint8_t attempts)
+size_t LoRaWANModem::readLine(char *buffer, size_t size, uint8_t attempts)
 {
   size_t read = 0;
   while (!read && attempts--)
@@ -382,7 +382,7 @@ size_t TheThingsNetwork::readLine(char *buffer, size_t size, uint8_t attempts)
   return read;
 }
 
-size_t TheThingsNetwork::readResponse(uint8_t prefixTable, uint8_t index, char *buffer, size_t size)
+size_t LoRaWANModem::readResponse(uint8_t prefixTable, uint8_t index, char *buffer, size_t size)
 {
   clearReadBuffer();
   sendCommand(prefixTable, 0, true, false);
@@ -391,7 +391,7 @@ size_t TheThingsNetwork::readResponse(uint8_t prefixTable, uint8_t index, char *
   return readLine(buffer, size);
 }
 
-size_t TheThingsNetwork::readResponse(uint8_t prefixTable, uint8_t indexTable, uint8_t index, char *buffer, size_t size)
+size_t LoRaWANModem::readResponse(uint8_t prefixTable, uint8_t indexTable, uint8_t index, char *buffer, size_t size)
 {
   clearReadBuffer();
   sendCommand(prefixTable, 0, true, false);
@@ -401,7 +401,7 @@ size_t TheThingsNetwork::readResponse(uint8_t prefixTable, uint8_t indexTable, u
   return readLine(buffer, size);
 }
 
-void TheThingsNetwork::autoBaud()
+void LoRaWANModem::autoBaud()
 {
   // Courtesy of @jpmeijers
   modemStream->setTimeout(2000);
@@ -425,7 +425,7 @@ void TheThingsNetwork::autoBaud()
   baudDetermined = true;
 }
 
-void TheThingsNetwork::reset(bool adr)
+void LoRaWANModem::reset(bool adr)
 {
   autoBaud();
   readResponse(SYS_TABLE, SYS_RESET, buffer, sizeof(buffer));
@@ -453,13 +453,13 @@ void TheThingsNetwork::reset(bool adr)
   this->needsHardReset = false;
 }
 
-void TheThingsNetwork::resetHard(uint8_t resetPin){
+void LoRaWANModem::resetHard(uint8_t resetPin){
   digitalWrite(resetPin, LOW);
   delay(1000);
   digitalWrite(resetPin, HIGH);
 }
 
-void TheThingsNetwork::saveState()
+void LoRaWANModem::saveState()
 {
   debugPrint(SENDING);
   sendCommand(MAC_TABLE, MAC_PREFIX, true);
@@ -469,12 +469,12 @@ void TheThingsNetwork::saveState()
   waitForOk();
 }
 
-void TheThingsNetwork::onMessage(void (*cb)(const uint8_t *payload, size_t size, port_t port))
+void LoRaWANModem::onMessage(void (*cb)(const uint8_t *payload, size_t size, lorawan_port_t port))
 {
   messageCallback = cb;
 }
 
-bool TheThingsNetwork::personalize(const char *devAddr, const char *nwkSKey, const char *appSKey)
+bool LoRaWANModem::personalize(const char *devAddr, const char *nwkSKey, const char *appSKey)
 {
   reset(adr);
   if (strlen(devAddr) != 8 || strlen(appSKey) != 32 || strlen(nwkSKey) != 32)
@@ -488,7 +488,7 @@ bool TheThingsNetwork::personalize(const char *devAddr, const char *nwkSKey, con
   return personalize();
 }
 
-bool TheThingsNetwork::personalize()
+bool LoRaWANModem::personalize()
 {
   configureChannels(fsb);
   setSF(sf);
@@ -506,7 +506,7 @@ bool TheThingsNetwork::personalize()
   return true;
 }
 
-bool TheThingsNetwork::provision(const char *appEui, const char *appKey)
+bool LoRaWANModem::provision(const char *appEui, const char *appKey)
 {
   reset(adr);
   if (strlen(appEui) != 16 || strlen(appKey) != 32)
@@ -522,7 +522,7 @@ bool TheThingsNetwork::provision(const char *appEui, const char *appKey)
   return true;
 }
 
-bool TheThingsNetwork::join(int8_t retries, uint32_t retryDelay)
+bool LoRaWANModem::join(int8_t retries, uint32_t retryDelay)
 {
   int8_t attempts = 0;
   configureChannels(fsb);
@@ -553,12 +553,12 @@ bool TheThingsNetwork::join(int8_t retries, uint32_t retryDelay)
   return false;
 }
 
-bool TheThingsNetwork::join(const char *appEui, const char *appKey, int8_t retries, uint32_t retryDelay)
+bool LoRaWANModem::join(const char *appEui, const char *appKey, int8_t retries, uint32_t retryDelay)
 {
   return provision(appEui, appKey) && join(retries, retryDelay);
 }
 
-ttn_response_t TheThingsNetwork::sendBytes(const uint8_t *payload, size_t length, port_t port, bool confirm, uint8_t sf)
+ttn_response_t LoRaWANModem::sendBytes(const uint8_t *payload, size_t length, lorawan_port_t port, bool confirm, uint8_t sf)
 {
   if (sf != 0)
   {
@@ -582,7 +582,7 @@ ttn_response_t TheThingsNetwork::sendBytes(const uint8_t *payload, size_t length
 
   if (pgmstrcmp(buffer, CMP_MAC_RX) == 0)
   {
-    port_t downlinkPort = receivedPort(buffer + 7);
+    lorawan_port_t downlinkPort = receivedPort(buffer + 7);
     char *data = buffer + 7 + digits(downlinkPort) + 1;
     size_t downlinkLength = strlen(data) / 2;
     if (downlinkLength > 0)
@@ -609,13 +609,13 @@ ttn_response_t TheThingsNetwork::sendBytes(const uint8_t *payload, size_t length
   return TTN_ERROR_UNEXPECTED_RESPONSE;
 }
 
-ttn_response_t TheThingsNetwork::poll(port_t port, bool confirm)
+ttn_response_t LoRaWANModem::poll(lorawan_port_t port, bool confirm)
 {
   uint8_t payload[] = {0x00};
   return sendBytes(payload, 1, port, confirm);
 }
 
-void TheThingsNetwork::showStatus()
+void LoRaWANModem::showStatus()
 {
   readResponse(SYS_TABLE, SYS_TABLE, SYS_GET_HWEUI, buffer, sizeof(buffer));
   debugPrintIndex(SHOW_EUI, buffer);
@@ -633,7 +633,7 @@ void TheThingsNetwork::showStatus()
   debugPrintIndex(SHOW_RX_DELAY_2, buffer);
 }
 
-void TheThingsNetwork::configureEU868()
+void LoRaWANModem::configureEU868()
 {
   sendMacSet(MAC_RX2, "3 869525000");
   sendChSet(MAC_CHANNEL_DRRANGE, 1, "0 6");
@@ -656,7 +656,7 @@ void TheThingsNetwork::configureEU868()
   sendMacSet(MAC_PWRIDX, TTN_PWRIDX_EU868);
 }
 
-void TheThingsNetwork::configureUS915(uint8_t fsb)
+void LoRaWANModem::configureUS915(uint8_t fsb)
 {
   uint8_t ch;
   uint8_t chLow = fsb > 0 ? (fsb - 1) * 8 : 0;
@@ -680,7 +680,7 @@ void TheThingsNetwork::configureUS915(uint8_t fsb)
   sendMacSet(MAC_PWRIDX, TTN_PWRIDX_US915);
 }
 
-void TheThingsNetwork::configureAU915(uint8_t fsb)
+void LoRaWANModem::configureAU915(uint8_t fsb)
 {
   uint8_t ch;
   uint8_t chLow = fsb > 0 ? (fsb - 1) * 8 : 0;
@@ -704,7 +704,7 @@ void TheThingsNetwork::configureAU915(uint8_t fsb)
   sendMacSet(MAC_PWRIDX, TTN_PWRIDX_AU915);
 }
 
-void TheThingsNetwork::configureAS920_923()
+void LoRaWANModem::configureAS920_923()
 {
   /* RN2903AS 1.0.3rc9 defaults
    * CH0 = 923.2MHz
@@ -737,7 +737,7 @@ void TheThingsNetwork::configureAS920_923()
   sendMacSet(MAC_PWRIDX, TTN_PWRIDX_AS920_923);
 }
 
-void TheThingsNetwork::configureAS923_925()
+void LoRaWANModem::configureAS923_925()
 {
   /* RN2903AS 1.0.3rc9 defaults
    * CH0 = 923.2MHz
@@ -770,7 +770,7 @@ void TheThingsNetwork::configureAS923_925()
   sendMacSet(MAC_PWRIDX, TTN_PWRIDX_AS923_925);
 }
 
-void TheThingsNetwork::configureKR920_923()
+void LoRaWANModem::configureKR920_923()
 {
   sendMacSet(MAC_ADR, "off"); // TODO: remove when ADR is implemented for this plan
   sendMacSet(MAC_RX2, "0 921900000"); // KR still uses SF12 for now. Might change to SF9 later.
@@ -794,7 +794,7 @@ void TheThingsNetwork::configureKR920_923()
   sendMacSet(MAC_PWRIDX, TTN_PWRIDX_KR920_923);
 }
 
-void TheThingsNetwork::configureIN865_867()
+void LoRaWANModem::configureIN865_867()
 {
   sendMacSet(MAC_ADR, "off"); // TODO: remove when ADR is implemented for this plan
   sendMacSet(MAC_RX2, "2 866550000"); // SF10
@@ -825,7 +825,7 @@ void TheThingsNetwork::configureIN865_867()
   sendMacSet(MAC_PWRIDX, TTN_PWRIDX_IN865_867);
 }
 
-void TheThingsNetwork::configureChannels(uint8_t fsb)
+void LoRaWANModem::configureChannels(uint8_t fsb)
 {
   switch (fp)
   {
@@ -857,7 +857,7 @@ void TheThingsNetwork::configureChannels(uint8_t fsb)
   sendMacSet(MAC_RETX, TTN_RETX);
 }
 
-bool TheThingsNetwork::setSF(uint8_t sf)
+bool LoRaWANModem::setSF(uint8_t sf)
 {
   uint8_t dr;
   switch (fp)
@@ -880,7 +880,7 @@ bool TheThingsNetwork::setSF(uint8_t sf)
   return sendMacSet(MAC_DR, s);
 }
 
-void TheThingsNetwork::sendCommand(uint8_t table, uint8_t index, bool appendSpace, bool print)
+void LoRaWANModem::sendCommand(uint8_t table, uint8_t index, bool appendSpace, bool print)
 {
   char command[100];
   switch (table)
@@ -921,7 +921,7 @@ void TheThingsNetwork::sendCommand(uint8_t table, uint8_t index, bool appendSpac
   }
 }
 
-bool TheThingsNetwork::sendMacSet(uint8_t index, const char *value)
+bool LoRaWANModem::sendMacSet(uint8_t index, const char *value)
 {
   clearReadBuffer();
   debugPrint(SENDING);
@@ -934,7 +934,7 @@ bool TheThingsNetwork::sendMacSet(uint8_t index, const char *value)
   return waitForOk();
 }
 
-bool TheThingsNetwork::waitForOk()
+bool LoRaWANModem::waitForOk()
 {
   readLine(buffer, sizeof(buffer));
   if (pgmstrcmp(buffer, CMP_OK) != 0)
@@ -945,7 +945,7 @@ bool TheThingsNetwork::waitForOk()
   return true;
 }
 
-bool TheThingsNetwork::sendChSet(uint8_t index, uint8_t channel, const char *value)
+bool LoRaWANModem::sendChSet(uint8_t index, uint8_t channel, const char *value)
 {
   clearReadBuffer();
   char ch[5];
@@ -975,7 +975,7 @@ bool TheThingsNetwork::sendChSet(uint8_t index, uint8_t channel, const char *val
   return waitForOk();
 }
 
-bool TheThingsNetwork::sendJoinSet(uint8_t type)
+bool LoRaWANModem::sendJoinSet(uint8_t type)
 {
   clearReadBuffer();
   debugPrint(F(SENDING));
@@ -987,7 +987,7 @@ bool TheThingsNetwork::sendJoinSet(uint8_t type)
   return waitForOk();
 }
 
-bool TheThingsNetwork::sendPayload(uint8_t mode, uint8_t port, uint8_t *payload, size_t length)
+bool LoRaWANModem::sendPayload(uint8_t mode, uint8_t port, uint8_t *payload, size_t length)
 {
   clearReadBuffer();
   debugPrint(F(SENDING));
@@ -1038,7 +1038,7 @@ bool TheThingsNetwork::sendPayload(uint8_t mode, uint8_t port, uint8_t *payload,
   return waitForOk();
 }
 
-void TheThingsNetwork::sleep(uint32_t mseconds)
+void LoRaWANModem::sleep(uint32_t mseconds)
 {
   if (mseconds < 100)
   {
@@ -1055,12 +1055,12 @@ void TheThingsNetwork::sleep(uint32_t mseconds)
   debugPrintLn(buffer);
 }
 
-void TheThingsNetwork::wake()
+void LoRaWANModem::wake()
 {
   autoBaud();
 }
 
-void TheThingsNetwork::linkCheck(uint16_t seconds)
+void LoRaWANModem::linkCheck(uint16_t seconds)
 {
   clearReadBuffer();
   debugPrint(SENDING);
@@ -1075,13 +1075,13 @@ void TheThingsNetwork::linkCheck(uint16_t seconds)
   waitForOk();
 }
 
-uint8_t TheThingsNetwork::getLinkCheckGateways()
+uint8_t LoRaWANModem::getLinkCheckGateways()
 {
   readResponse(MAC_TABLE, MAC_GET_SET_TABLE, MAC_GWNB, buffer, sizeof(buffer));
   return strtol(buffer, NULL, 10);
 }
 
-uint8_t TheThingsNetwork::getLinkCheckMargin()
+uint8_t LoRaWANModem::getLinkCheckMargin()
 {
   readResponse(MAC_TABLE, MAC_GET_SET_TABLE, MAC_MRGN, buffer, sizeof(buffer));
   return strtol(buffer, NULL, 10);
