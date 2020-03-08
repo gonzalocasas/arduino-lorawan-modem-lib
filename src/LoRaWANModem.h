@@ -34,7 +34,7 @@
 
 #define TTN_BUFFER_SIZE 300
 
-                                     typedef uint8_t port_t;
+typedef uint8_t lorawan_port_t;
 
 // TTN Response codes
 enum ttn_response_t
@@ -238,7 +238,7 @@ private:
   bool adr;
   char buffer[512];
   bool baudDetermined = false;
-  void (*messageCallback)(const uint8_t *payload, size_t size, port_t port);
+  void (*messageCallback)(const uint8_t *payload, size_t size, lorawan_port_t port);
 
   void clearReadBuffer();
   size_t readLine(char *buffer, size_t size, uint8_t attempts = 3);
@@ -277,14 +277,14 @@ public:
   size_t getHardwareEui(char *buffer, size_t size);
   size_t getAppEui(char *buffer, size_t size);
   uint16_t getVDD();
-  void onMessage(void (*cb)(const uint8_t *payload, size_t size, port_t port));
+  void onMessage(void (*cb)(const uint8_t *payload, size_t size, lorawan_port_t port));
   bool provision(const char *appEui, const char *appKey);
   bool join(const char *appEui, const char *appKey, int8_t retries = -1, uint32_t retryDelay = 10000);
   bool join(int8_t retries = -1, uint32_t retryDelay = 10000);
   bool personalize(const char *devAddr, const char *nwkSKey, const char *appSKey);
   bool personalize();
-  ttn_response_t sendBytes(const uint8_t *payload, size_t length, port_t port = 1, bool confirm = false, uint8_t sf = 0);
-  ttn_response_t poll(port_t port = 1, bool confirm = false);
+  ttn_response_t sendBytes(const uint8_t *payload, size_t length, lorawan_port_t port = 1, bool confirm = false, uint8_t sf = 0);
+  ttn_response_t poll(lorawan_port_t port = 1, bool confirm = false);
   void sleep(uint32_t mseconds);
   void wake();
   void saveState();
