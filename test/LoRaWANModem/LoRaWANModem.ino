@@ -18,7 +18,7 @@ LoRaWANModem modem3(loraSerial, debugSerial, TTN_FP_AS923_925, 10, 4);
 
 void setup()
 {
-  loraSerial.begin(57600);
+  loraSerial.begin(115200);
   debugSerial.begin(9600);
 
   modem.provision(appEui, appKey);

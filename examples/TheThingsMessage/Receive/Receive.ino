@@ -19,7 +19,7 @@ void setup()
 {
   pinMode(LED_BUILTIN, INPUT);
 
-  loraSerial.begin(57600);
+  loraSerial.begin(115200);
   debugSerial.begin(9600);
 
   // Wait a maximum of 10s for Serial Monitor

@@ -10,7 +10,7 @@ LoRaWANModem modem(loraSerial, debugSerial, freqPlan);
 
 void setup()
 {
-  loraSerial.begin(57600);
+  loraSerial.begin(115200);
   debugSerial.begin(9600);
 }
 
