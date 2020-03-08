@@ -1,7 +1,13 @@
+// This library is a direct port of the excellent The Things Network library
+// for Arduino Devices by Johan Stokking et al.
+// This library aims to preserve API compatibility to the original,
+// but the underlying implementation will be substantially different.
+// Despite of that, the original author list and some copyright notices
+// are kept untouched.
+//
 // Copyright © 2017 The Things Network
-// Use of this source code is governed by the MIT license that can be found in the LICENSE file.
 
-#include "TheThingsNetwork.h"
+#include "LoRaWANModem.h"
 
 #define debugPrintLn(...)                \
   {                                      \

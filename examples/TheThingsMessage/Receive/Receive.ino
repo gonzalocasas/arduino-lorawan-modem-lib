@@ -1,5 +1,5 @@
-#include <TheThingsNetwork.h>
-#include <TheThingsMessage.h>
+#include <LoRaWANModem.h>
+#include <LoRaWANMessage.h>
 
 // Set your AppEUI and  AppKey
 const char *appEui = "0000000000000000";
@@ -11,7 +11,7 @@ const char *appKey = "00000000000000000000000000000000";
 // Replace REPLACE_ME with TTN_FP_EU868 or TTN_FP_US915
 #define freqPlan REPLACE_ME
 
-TheThingsNetwork ttn(loraSerial, debugSerial, freqPlan);
+LoRaWANModem modem(loraSerial, debugSerial, freqPlan);
 
 devicedata_t data = api_DeviceData_init_default;
 
@@ -27,12 +27,12 @@ void setup()
     ;
 
   debugSerial.println("-- STATUS");
-  ttn.showStatus();
+  modem.showStatus();
 
   debugSerial.println("-- JOIN");
-  ttn.join(appEui, appKey);
+  modem.join(appEui, appKey);
 
-  ttn.onMessage(message);
+  modem.onMessage(message);
 
   data.has_motion = true;
   data.has_water = true;
@@ -49,8 +49,8 @@ void loop()
   size_t size;
 
   // Send standard message on port 100
-  TheThingsMessage::encodeDeviceData(&data, &buffer, &size);
-  ttn.sendBytes(buffer, size, 100);
+  LoRaWANMessage::encodeDeviceData(&data, &buffer, &size);
+  modem.sendBytes(buffer, size, 100);
 
   delay(10000);
 }
@@ -61,6 +61,6 @@ void message(const uint8_t *payload, size_t length, port_t port)
   if (port >= 100)
   {
     appdata_t appData = api_AppData_init_default;
-    TheThingsMessage::decodeAppData(&appData, payload, length);
+    LoRaWANMessage::decodeAppData(&appData, payload, length);
   }
 }

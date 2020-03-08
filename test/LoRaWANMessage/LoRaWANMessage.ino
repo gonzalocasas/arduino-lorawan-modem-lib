@@ -1,4 +1,4 @@
-#include <TheThingsMessage.h>
+#include <LoRaWANMessage.h>
 
 devicedata_t data = api_DeviceData_init_default;
 
@@ -20,5 +20,5 @@ void loop() {
   byte *buffer;
   size_t size;
 
-  TheThingsMessage::encodeDeviceData(&data, &buffer, &size);
+  LoRaWANMessage::encodeDeviceData(&data, &buffer, &size);
 }

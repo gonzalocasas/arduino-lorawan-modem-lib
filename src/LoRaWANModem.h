@@ -1,8 +1,14 @@
+// This library is a direct port of the excellent The Things Network library
+// for Arduino Devices by Johan Stokking et al.
+// This library aims to preserve API compatibility to the original,
+// but the underlying implementation will be substantially different.
+// Despite of that, the original author list and some copyright notices
+// are kept untouched.
+//
 // Copyright © 2017 The Things Network
-// Use of this source code is governed by the MIT license that can be found in the LICENSE file.
 
-#ifndef _THETHINGSNETWORK_H_
-#define _THETHINGSNETWORK_H_
+#ifndef _LORAWANMODEM_H_
+#define _LORAWANMODEM_H_
 
 #include <Arduino.h>
 #include <Stream.h>
@@ -19,7 +25,7 @@
 #define TTN_PWRIDX_EU868 "1"
 #define TTN_PWRIDX_US915 "5"
 #define TTN_PWRIDX_AU915 "5"
-#define TTN_PWRIDX_AS920_923 "1" // TODO: should be 0, but the current RN2903AS firmware doesn't accept that value (probably still using EU868: 1=14dBm)
+#define TTN_PWRIDX_AS920_923 "1" // TODO: should be 0, originally not changed because RN2903AS firmware didn't accept that value (probably still using EU868: 1=14dBm)
 #define TTN_PWRIDX_AS923_925 "1" // TODO: should be 0
 #define TTN_PWRIDX_KR920_923 "1" // TODO: should be 0
 #define TTN_PWRIDX_IN865_867 "1" // TODO: should be 0
@@ -47,7 +53,7 @@ enum ttn_fp_t
   TTN_FP_IN865_867
 };
 
-class TheThingsNetwork
+class LoRaWANModem
 {
 private:
   Stream *modemStream;
@@ -90,7 +96,7 @@ private:
 public:
   bool needsHardReset = false;
 
-  TheThingsNetwork(Stream &modemStream, Stream &debugStream, ttn_fp_t fp, uint8_t sf = TTN_DEFAULT_SF, uint8_t fsb = TTN_DEFAULT_FSB);
+  LoRaWANModem(Stream &modemStream, Stream &debugStream, ttn_fp_t fp, uint8_t sf = TTN_DEFAULT_SF, uint8_t fsb = TTN_DEFAULT_FSB);
   void reset(bool adr = true);
   void resetHard(uint8_t resetPin);
   void showStatus();

@@ -1,25 +1,27 @@
-# The Things Network Arduino Library
-[![Build Status](https://travis-ci.org/TheThingsNetwork/arduino-device-lib.svg?branch=master)](https://travis-ci.org/TheThingsNetwork/arduino-device-lib)
+# LoRaWAN Modem Arduino Library
 
-This is an [Arduino Library](https://www.arduino.cc/en/Guide/Libraries) for Arduino devices like [The Things Uno](https://www.thethingsnetwork.org/docs/devices/uno/) and [Node](https://www.thethingsnetwork.org/docs/devices/node/) to communicate via [The Things Network](https://www.thethingsnetwork.org).
+[![Build Status](https://travis-ci.org/ttn-zh/arduino-lorawan-modem-lib.svg?branch=master)](https://travis-ci.org/ttn-zh/arduino-lorawan-modem-lib)
 
-> At the moment this library requires devices to feature a [Microchip RN2xx3 module](http://www.microchip.com/design-centers/wireless-connectivity/embedded-wireless/lora-technology).
+This is an [Arduino Library](https://www.arduino.cc/en/Guide/Libraries) for Arduino devices supporting a LoRaWAN Serial/Soft Modem to communicate to [The Things Network](https://www.thethingsnetwork.org).
 
 ## Installation
 
 * Install the library by [Using the Library Manager](https://www.arduino.cc/en/Guide/Libraries#toc3)
-* **OR** by [Importing the .zip library](https://www.arduino.cc/en/Guide/Libraries#toc4) using either the [master](https://github.com/TheThingsNetwork/arduino-device-lib/archive/master.zip) or one of the [releases](https://github.com/TheThingsNetwork/arduino-device-lib/releases) ZIP files.
+* **OR** by [Importing the .zip library](https://www.arduino.cc/en/Guide/Libraries#toc4) using either the [master](https://github.com/ttn-zh/arduino-lorawan-modem-lib/archive/master.zip) or one of the [releases](https://github.com/ttn-zh/arduino-lorawan-modem-lib/releases) ZIP files.
 
 ## Documentation
 
+* API Reference:
+  * [LoRaWANModem](docs/LoRaWANModem.md)
+  * [LoRaWANMessage](docs/LoRaWANMessage.md)
 * [The Things Network Documentation](https://www.thethingsnetwork.org/docs/devices/arduino/)
-* API References:
-    * [TheThingsNetwork](docs/TheThingsNetwork.md)
-    * [TheThingsMessage](docs/TheThingsMessage.md)
 
 ## Examples
 
+The library comes with [examples](examples). After installing the library you need to restart the Arduino IDE before they can be found under **File > Examples > LoRaWANModem**.
 
 ## Credits
 
-This library is a direct port of the excellent [`The Things Network` library for Arduino Devices](https://github.com/TheThingsNetwork/arduino-device-lib) and attempts to present API compatibility to it.
+This library is a direct port of the excellent [`The Things Network` library for Arduino Devices](https://github.com/TheThingsNetwork/arduino-device-lib) by [Johan Stokking et al](AUTHORS).
+
+This library aims to preserve API compatibility to the original, but the underlying implementation will be substantially different. Despite of that, the original author list and some copyright notices are kept untouched.

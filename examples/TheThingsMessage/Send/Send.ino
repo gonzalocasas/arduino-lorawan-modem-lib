@@ -1,5 +1,5 @@
-#include <TheThingsNetwork.h>
-#include <TheThingsMessage.h>
+#include <LoRaWANModem.h>
+#include <LoRaWANMessage.h>
 
 // Set your AppEUI and AppKey
 const char *appEui = "0000000000000000";
@@ -11,7 +11,7 @@ const char *appKey = "00000000000000000000000000000000";
 // Replace REPLACE_ME with TTN_FP_EU868 or TTN_FP_US915
 #define freqPlan REPLACE_ME
 
-TheThingsNetwork ttn(loraSerial, debugSerial, freqPlan);
+LoRaWANModem modem(loraSerial, debugSerial, freqPlan);
 
 devicedata_t data = api_DeviceData_init_default;
 
@@ -25,10 +25,10 @@ void setup()
     ;
 
   debugSerial.println("-- STATUS");
-  ttn.showStatus();
+  modem.showStatus();
 
   debugSerial.println("-- JOIN");
-  ttn.join(appEui, appKey);
+  modem.join(appEui, appKey);
 
   // Select what fields to include in the encoded message
   data.has_motion = true;
@@ -52,9 +52,9 @@ void loop()
   // Encode the selected fields of the struct as bytes
   byte *buffer;
   size_t size;
-  TheThingsMessage::encodeDeviceData(&data, &buffer, &size);
+  LoRaWANMessage::encodeDeviceData(&data, &buffer, &size);
 
-  ttn.sendBytes(buffer, size);
+  modem.sendBytes(buffer, size);
 
   delay(10000);
 }

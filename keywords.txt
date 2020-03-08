@@ -6,9 +6,8 @@
 # Class (KEYWORD1)
 #######################################
 
-TheThingsNetwork	KEYWORD1
-TheThingsMessage	KEYWORD1
-TheThingsNode	KEYWORD1
+LoRaWANModem	KEYWORD1
+LoRaWANMessage	KEYWORD1
 
 ttn_port_t	KEYWORD1
 ttn_response_t	KEYWORD1

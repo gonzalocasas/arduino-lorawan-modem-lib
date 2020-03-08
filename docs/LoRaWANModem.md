@@ -1,15 +1,15 @@
 # API Reference
 
-The `TheThingsNetwork` class enables Arduino devices with supported LoRaWAN modules to communicate via The Things Network. Currently supported LoRaWAN modules are the Microchip RN2483 and the RN2903.
+The `LoRaWANModem` class enables Arduino devices with supported LoRaWAN modems to communicate to The Things Network.
 
-## Class: `TheThingsNetwork`
+## Class: `LoRaWANModem`
 
-Include and instantiate the TheThingsNetwork class. The constructor initialize the library with the Streams it should communicate with. It also sets the value of the spreading factor, the frequency plan and the frequency sub-band.
+Include and instantiate the LoRaWANModem class. The constructor initializes the library with the streams it should communicate with. It also sets the value of the spreading factor, the frequency plan and the frequency sub-band.
 
 ```c
-#include <TheThingsNetwork.h>
+#include <LoRaWANModem.h>
 
-TheThingsNetwork ttn(Stream& modemStream, Stream& debugStream, fp_ttn_t fp, uint8_t sf = 7, uint8_t fsb = 2);
+LoRaWANModem ttn(Stream& modemStream, Stream& debugStream, fp_ttn_t fp, uint8_t sf = 7, uint8_t fsb = 2);
 ```
 
 - `Stream& modemStream`: Stream for the LoRa modem ([see notes](https://www.thethingsnetwork.org/docs/devices/arduino/usage.html)).

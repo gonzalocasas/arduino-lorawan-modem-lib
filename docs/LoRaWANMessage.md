@@ -1,10 +1,10 @@
 # API Reference
 
-## Class: `TheThingsMessage`
-The `TheThingsMessage` class provides structs for sensor and application data you can encode and decode as bytes.
+## Class: `LoRaWANMessage`
+The `LoRaWANMessage` class provides structs for sensor and application data you can encode and decode as bytes.
 
 ```c
-#include <TheThingsMessage.h>
+#include <LoRaWANMessage.h>
 ```
 
 ## Type: `devicedata_t`
@@ -58,7 +58,7 @@ Usage:
 ```c
 byte *buffer;
 size_t size;
-TheThingsMessage::encodeDeviceData(&data, &buffer, &size);
+LoRaWANMessage::encodeDeviceData(&data, &buffer, &size);
 ```
 
 ## Method: `decodeAppData`
@@ -78,5 +78,5 @@ Usage:
 ```c
 const byte *payload;
 size_t length;
-TheThingsMessage::decodeAppData(&receiveData, payload, length);
+LoRaWANMessage::decodeAppData(&receiveData, payload, length);
 ```

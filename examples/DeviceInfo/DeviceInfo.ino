@@ -1,4 +1,4 @@
-#include <TheThingsNetwork.h>
+#include <LoRaWANModem.h>
 
 #define loraSerial Serial1
 #define debugSerial Serial
@@ -6,7 +6,7 @@
 // Replace REPLACE_ME with TTN_FP_EU868 or TTN_FP_US915
 #define freqPlan REPLACE_ME
 
-TheThingsNetwork ttn(loraSerial, debugSerial, freqPlan);
+LoRaWANModem modem(loraSerial, debugSerial, freqPlan);
 
 void setup()
 {
@@ -18,7 +18,7 @@ void loop()
 {
   debugSerial.println("Device Information");
   debugSerial.println();
-  ttn.showStatus();
+  modem.showStatus();
   debugSerial.println();
   debugSerial.println("Use the EUI to register the device for OTAA");
   debugSerial.println("-------------------------------------------");

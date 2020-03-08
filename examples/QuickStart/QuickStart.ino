@@ -1,4 +1,4 @@
-#include <TheThingsNetwork.h>
+#include <LoRaWANModem.h>
 
 // Set your AppEUI and AppKey
 const char *appEui = "0000000000000000";
@@ -10,7 +10,7 @@ const char *appKey = "00000000000000000000000000000000";
 // Replace REPLACE_ME with TTN_FP_EU868 or TTN_FP_US915
 #define freqPlan REPLACE_ME
 
-TheThingsNetwork ttn(loraSerial, debugSerial, freqPlan);
+LoRaWANModem modem(loraSerial, debugSerial, freqPlan);
 
 void setup()
 {
@@ -22,13 +22,13 @@ void setup()
     ;
 
   // Set callback for incoming messages
-  ttn.onMessage(message);
+  modem.onMessage(message);
 
   debugSerial.println("-- STATUS");
-  ttn.showStatus();
+  modem.showStatus();
 
   debugSerial.println("-- JOIN");
-  ttn.join(appEui, appKey);
+  modem.join(appEui, appKey);
 }
 
 void loop()
@@ -40,7 +40,7 @@ void loop()
   payload[0] = (digitalRead(LED_BUILTIN) == HIGH) ? 1 : 0;
 
   // Send it off
-  ttn.sendBytes(payload, sizeof(payload));
+  modem.sendBytes(payload, sizeof(payload));
 
   delay(10000);
 }
